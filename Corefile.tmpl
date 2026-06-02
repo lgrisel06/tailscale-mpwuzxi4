@@ -1,0 +1,18 @@
+# Généré au démarrage par run-tailscale.sh via envsubst.
+# Les variables ${...} sont injectées depuis l'environnement Render.
+.:53 {
+    # Noms courts et stables : <service>.${TS_DNS_DOMAIN}
+    #   -> réécrits vers le domaine interne Render <service>.${RENDER_INTERNAL_DOMAIN}
+    #   "answer auto" réécrit le nom de la réponse vers ${TS_DNS_DOMAIN}.
+    rewrite stop {
+        name suffix .${TS_DNS_DOMAIN} .${RENDER_INTERNAL_DOMAIN}
+        answer auto
+    }
+
+    # Relai vers le resolver interne Render (joignable uniquement depuis le réseau Render).
+    forward . ${RENDER_UPSTREAM_DNS}
+
+    cache 30
+    log
+    errors
+}

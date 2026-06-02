@@ -8,8 +8,20 @@ services:
         sync: false
       - key: TAILSCALE_VERSION
         value: 1.96.4
+      - key: COREDNS_VERSION
+        value: 1.12.0
       - key: ADVERTISE_ROUTES
         value: 10.0.0.0/8
+      # Domaine interne Render réel (cf. `cat /etc/resolv.conf` dans le web shell).
+      # Ex: own-xxxxxxxx.svc.cluster.local
+      - key: RENDER_INTERNAL_DOMAIN
+        sync: false
+      # Domaine "joli" exposé dans le tailnet via Split DNS.
+      - key: TS_DNS_DOMAIN
+        value: feelia.internal
+      # Resolver interne Render (vérifier dans /etc/resolv.conf si différent).
+      - key: RENDER_UPSTREAM_DNS
+        value: 169.254.20.10
     disk:
       name: tailscale-state
       mountPath: /var/lib/tailscale
